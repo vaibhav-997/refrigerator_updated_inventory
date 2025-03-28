@@ -1,0 +1,10 @@
+streamlit
+mysql-connector-python
+pandas
+numpy
+sqlalchemy
+streamlit
+mysql-connector-python
+pandas
+numpy
+sqlalchemy
