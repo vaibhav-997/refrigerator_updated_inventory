@@ -40,7 +40,7 @@ if products:
             qr_code_data = qr_bytes.getvalue()
 
             # Update the product in the database
-            success = update_product(product_id, new_name, new_lot, category, str(new_mfg), str(new_expire), qr_code_data)
+            success = update_product(product_id, new_name, new_lot, category, str(new_mfg), str(new_expire))
             if success:
                 st.success("✅ Product updated successfully! New QR Code generated.")
                 st.rerun()
