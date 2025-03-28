@@ -21,8 +21,8 @@ if products:
         # Pre-fill form with existing values
         new_name = st.text_input("Product Name", value=product_data["ProductName"])
         new_lot = st.text_input("Lot Number", value=product_data["LotNumber"])
-        new_mfg = st.text_input("Manufacture Date", value=product_data["Mfg"])
-        new_expire = st.text_input("Expiry Date", value=product_data["expire"])  # Ensure correct key
+        new_mfg = st.date_input("Manufacture Date", value=product_data["Mfg"])
+        new_expire = st.date_input("Expiry Date", value=product_data["expire"])  # Ensure correct key
         category_options = ["Cold Bottle","Cold Items", "Ice Cream", "Dairy Products", "Medical Products"]
         category = st.selectbox("Category", category_options, index=category_options.index(product_data["Category"]))
 
