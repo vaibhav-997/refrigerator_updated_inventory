@@ -51,7 +51,7 @@ def navbar():
         }
         </style>
         <div class="navbar">
-            <a href="http://localhost:8501" target="_self">Home</a>
+            <a href="http://localhost:8501/" target="_self">Home</a>
             <a href="http://localhost:8501/Product_Regsitratin" target="_self">Register Product</a>
             <a href="http://localhost:8501/Products" target="_self">View Products</a>
             <a href="http://localhost:8501/Update_Delete" target="_self">Update/Delete</a>
