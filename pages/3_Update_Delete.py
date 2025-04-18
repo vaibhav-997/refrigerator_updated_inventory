@@ -4,6 +4,41 @@ import qrcode
 from io import BytesIO
 from datetime import datetime
 
+from utils import hide_sidebar, navbar
+from streamlit_option_menu import option_menu
+
+hide_sidebar()
+
+# Custom Navbar Function
+selected = option_menu(
+    menu_title=None,
+    options=["Home", "Register Product", "View Products", "Update/Delete"],
+    icons=["house", "plus-square", "card-list", "pencil-square"],
+    orientation="horizontal",
+    # styles={
+    #     "container": {"padding": "0!important", "background-color": "#2c7be5"},
+    #     "nav-link": {
+    #         "font-size": "16px",
+    #         "color": "white",
+    #         "margin": "0 10px",
+    #         "padding": "10px 20px",
+    #         "transition": "0.3s"
+    #     },
+    #     "nav-link-selected": {"background-color": "#1b5ab6"},
+    # }
+)
+
+# Navigation logic
+if selected == "Register Product":
+    st.switch_page("pages/1_Product_Registration.py")
+elif selected == "View Products":
+    st.switch_page("pages/2_Products.py")
+elif selected == "Update/Delete":
+    st.switch_page("pages/3_Update_Delete.py")
+
+# Calling navbar function to display at the top
+# navbar()
+
 st.title("✏️ Update/Delete Products")
 
 # Fetch all products
@@ -19,16 +54,12 @@ if products:
         # Get the existing values
         product_data = next(p for p in products if p["id"] == product_id)
 
-        # Ensure dates are properly formatted
-        mfg_date = datetime.strptime(product_data["Mfg"], "%Y-%m-%d").date() if isinstance(product_data["Mfg"], str) else product_data["Mfg"]
-        exp_date = datetime.strptime(product_data["expire"], "%Y-%m-%d").date() if isinstance(product_data["expire"], str) else product_data["expire"]
-
         # Pre-fill form with existing values
         new_name = st.text_input("Product Name", value=product_data["ProductName"])
         new_lot = st.text_input("Lot Number", value=product_data["LotNumber"])
-        new_mfg = st.date_input("Manufacture Date", value=mfg_date)
-        new_expire = st.date_input("Expiry Date", value=exp_date)  # Fixed key usage
-        category_options = ["Cold Bottle", "Cold Items", "Ice Cream", "Dairy Products", "Medical Products"]
+        new_mfg = st.date_input("Manufacture Date", value=datetime.strptime(product_data["Mfg"], "%Y-%m-%d").date())
+        new_expire = st.date_input("Expiry Date", value=datetime.strptime(product_data["expire"], "%Y-%m-%d").date())
+        category_options = ["Cold Bottle", "Ice Cream", "Dairy Products", "Medical Products"]
         category = st.selectbox("Category", category_options, index=category_options.index(product_data["Category"]))
 
         if st.button("Update Product"):
@@ -54,4 +85,3 @@ if products:
                 st.rerun()
             else:
                 st.error("❌ Failed to delete product!")
-
