@@ -1,43 +1,53 @@
 import streamlit as st
+from streamlit_option_menu import option_menu
 
-st.title("Manage your regfrigerator inventory along with the expiry")
+# Hide the default sidebar and Streamlit's top header
+st.markdown("""
+    <style>
+        [data-testid="stSidebar"] {
+            display: none;
+        }
+        header[data-testid="stHeader"] {
+            display: none;
+        }
+        .block-container {
+            padding-top: 2rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
-# with st.sidebar:
-#     st.markdown("### 📌 Navigation")
-#     st.page_link("pages/1_Product_Registration.py", label="📝 Register Product")
-#     st.page_link("pages/2_Products.py", label="📂 View Products")
-#     st.page_link("pages/3_Update_Delete.py", label="✏️ Update/Delete Products")
+# Navbar using option_menu
+selected = option_menu(
+    menu_title=None,
+    options=["Home", "Register Product", "View Products", "Update/Delete"],
+    icons=["house", "plus-square", "card-list", "pencil-square"],
+    orientation="horizontal",
+    # styles={
+    #     "container": {"padding": "0!important", "background-color": "#2c7be5"},
+    #     "nav-link": {
+    #         "font-size": "16px",
+    #         "color": "white",
+    #         "margin": "0 10px",
+    #         "padding": "10px 20px",
+    #         "transition": "0.3s"
+    #     },
+    #     "nav-link-selected": {"background-color": "#1b5ab6"},
+    # }
+)
 
-# # Initialize session state for login
-# if "logged_in" not in st.session_state:
-#     st.session_state.logged_in = False
+# Navigation logic
+if selected == "Register Product":
+    st.switch_page("pages/1_Product_Registration.py")
+elif selected == "View Products":
+    st.switch_page("pages/2_Products.py")
+elif selected == "Update/Delete":
+    st.switch_page("pages/3_Update_Delete.py")
 
-# # User authentication (Replace with actual logic)
-# def login():
-#     st.title("🔐 Login")
-#     username = st.text_input("Username")
-#     password = st.text_input("Password", type="password")
-    
-#     if st.button("Login"):
-#         if username == "admin" and password == "password":  # Replace with real auth
-#             st.session_state.logged_in = True
-#             st.rerun()
-#         else:
-#             st.error("Invalid credentials")
-
-# # Logout function
-# def logout():
-#     st.session_state.logged_in = False
-#     st.rerun()
-
-# # **Only show navigation after login**
-# if not st.session_state.logged_in:
-#     login()  # Show login page
-# else:
-#     # **Show Sidebar Navigation after login**
-#     with st.sidebar:
-#         st.markdown("### 📌 Navigation")
-#         st.page_link("pages/1_Product_Registration.py", label="📝 Register Product")
-#         st.page_link("pages/2_Products.py", label="📂 View Products")
-#         st.page_link("pages/3_Update_Delete.py", label="✏️ Update/Delete Products")
-#         st.button("🚪 Logout", on_click=logout)
+# Home content
+if selected == "Home":
+    st.title("Manage your Refrigerator Inventory Along with the Expiry")
+    st.markdown("""
+        This app allows you to register products,  
+        view products by category, and update or delete product details,  
+        including expiry dates.
+    """)
