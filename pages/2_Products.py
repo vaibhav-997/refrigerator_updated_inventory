@@ -1,6 +1,38 @@
 import streamlit as st
 from database import fetch_all_products, display_products
+from utils import hide_sidebar, navbar
+from streamlit_option_menu import option_menu
 
+hide_sidebar()
+# Custom Navbar Function
+selected = option_menu(
+    menu_title=None,
+    options=["Home", "Register Product", "View Products", "Update/Delete"],
+    icons=["house", "plus-square", "card-list", "pencil-square"],
+    orientation="horizontal",
+    # styles={
+    #     "container": {"padding": "0!important", "background-color": "#2c7be5"},
+    #     "nav-link": {
+    #         "font-size": "16px",
+    #         "color": "white",
+    #         "margin": "0 10px",
+    #         "padding": "10px 20px",
+    #         "transition": "0.3s"
+    #     },
+    #     "nav-link-selected": {"background-color": "#1b5ab6"},
+    # }
+)
+
+# Navigation logic
+if selected == "Register Product":
+    st.switch_page("pages/1_Product_Registration.py")
+elif selected == "View Products":
+    st.switch_page("pages/2_Products.py")
+elif selected == "Update/Delete":
+    st.switch_page("pages/3_Update_Delete.py")
+
+# Calling navbar function to display at the top
+# navbar()
 
 st.title("🗂️ Product Categories")
 
@@ -11,21 +43,19 @@ products = fetch_all_products()
 from datetime import datetime
 def check_expired_products():
     today = datetime.date( datetime.today())
-    products = fetch_all_products()
-
     expired = []
     expiring_soon = []
 
     for product in products:
-        expire_date = product.get("expire")  # Ensure key matches DB
+        expire_date = product.get("expire")
         if expire_date:
             try:
                 expire_date = datetime.strptime(expire_date, "%Y-%m-%d").date()
                 days_left = (expire_date - today).days
 
-                if days_left < 0:  # Already expired
+                if days_left < 0:  
                     expired.append(product)
-                elif days_left <= 7:  # Expiring in next 7 days
+                elif days_left <= 7:  
                     expiring_soon.append(product)
 
             except ValueError:
@@ -45,13 +75,5 @@ def check_expired_products():
 
 check_expired_products()
 
-# Define available categories
-categories = ["All", "Cold Bottle", "Ice Cream", "Dairy Products", "Medical Products"]
-selected_category = st.selectbox("Select a category", categories)
-
-# Filter products based on category
-if selected_category != "All":
-    products = [p for p in products if p["Category"] == selected_category]
-
 # Display filtered products
-display_products(products)  # ✅ Pass the filtered list
+display_products(products)
