@@ -31,8 +31,7 @@ elif selected == "View Products":
     st.switch_page("pages/2_Products.py")
 elif selected == "Update/Delete":
     st.switch_page("pages/3_Update_Delete.py")
-elif selected == "Home":
-    st.switch_page("Home.py")
+
 
 
 # Calling navbar function to display at the top
