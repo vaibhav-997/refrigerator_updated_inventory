@@ -15,17 +15,6 @@ selected = option_menu(
     options=["Home", "Register Product", "View Products", "Update/Delete"],
     icons=["house", "plus-square", "card-list", "pencil-square"],
     orientation="horizontal",
-    # styles={
-    #     "container": {"padding": "0!important", "background-color": "#2c7be5"},
-    #     "nav-link": {
-    #         "font-size": "16px",
-    #         "color": "white",
-    #         "margin": "0 10px",
-    #         "padding": "10px 20px",
-    #         "transition": "0.3s"
-    #     },
-    #     "nav-link-selected": {"background-color": "#1b5ab6"},
-    # }
 )
 
 # Navigation logic
@@ -36,9 +25,7 @@ elif selected == "View Products":
 elif selected == "Update/Delete":
     st.switch_page("pages/3_Update_Delete.py")
 
-# Calling navbar function to display at the top
-# navbar()
-
+# Title
 st.title("✏️ Update/Delete Products")
 
 # Fetch all products
@@ -59,8 +46,15 @@ if products:
         new_lot = st.text_input("Lot Number", value=product_data["LotNumber"])
         new_mfg = st.date_input("Manufacture Date", value=datetime.strptime(product_data["Mfg"], "%Y-%m-%d").date())
         new_expire = st.date_input("Expiry Date", value=datetime.strptime(product_data["expire"], "%Y-%m-%d").date())
+
         category_options = ["Cold Bottle", "Ice Cream", "Dairy Products", "Medical Products"]
-        category = st.selectbox("Category", category_options, index=category_options.index(product_data["Category"]))
+
+        # Handle unknown or missing category gracefully
+        if product_data["Category"] not in category_options:
+            category_options.insert(0, product_data["Category"])  # Add it at the top
+        default_index = category_options.index(product_data["Category"])
+
+        category = st.selectbox("Category", category_options, index=default_index)
 
         if st.button("Update Product"):
             # Generate new QR Code
@@ -85,3 +79,5 @@ if products:
                 st.rerun()
             else:
                 st.error("❌ Failed to delete product!")
+else:
+    st.info("ℹ️ No products available to update or delete.")
